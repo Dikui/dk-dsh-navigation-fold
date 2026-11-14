@@ -6,9 +6,7 @@ settings:
 
 importers:
 
-  .: {}
-
-  packages/dk-navigation-fold:
+  .:
     devDependencies:
       jsdom:
         specifier: 29.1.1

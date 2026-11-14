@@ -1,13 +1,35 @@
 {
-  "name": "dk-dsh-front",
+  "name": "dk-navigation-fold",
+  "version": "0.0.1",
   "private": true,
-  "description": "用于集中开发与维护 DeepSeek Harness 前端插件和界面增强的工作区。",
+  "description": "侧栏分组切换：用顶部标签在工作区与功能导航之间切换，保留官方侧栏操作。",
+  "type": "module",
   "packageManager": "pnpm@11.28.5",
-  "engines": {"node": ">=22.19.0"},
-  "scripts": {
-    "build": "pnpm -r --if-present run build",
-    "test": "pnpm -r --if-present run test",
-    "check": "pnpm -r --if-present run check"
+  "main": "./index.js",
+  "exports": {
+    ".": "./index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
   },
-  "repository": {"type": "git", "url": "git+https://github.com/Dikui/dk-dsh-front.git"}
+  "files": ["index.js", "lib/client.js", "cordis.patch.yml", "README.md"],
+  "dsh": {
+    "manifestVersion": 1,
+    "bundle": {"patch": "./cordis.patch.yml"},
+    "client": {
+      "platform": "web",
+      "inject": ["@deepseek-ai/dsh-client-ui-sidebar"]
+    }
+  },
+  "engines": {"node": ">=22.19.0", "dsh": "^0.2.2-rc.1"},
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node scripts/build.mjs && node --test test/*.test.mjs",
+    "check": "node --check src/navigation-fold.js && node scripts/build.mjs && node --check lib/client.js && node --test test/*.test.mjs",
+    "prepack": "node scripts/build.mjs"
+  },
+  "devDependencies": {"jsdom": "29.1.1"},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dikui/dk-navigation-fold.git"
+  }
 }

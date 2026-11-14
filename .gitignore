@@ -4,6 +4,7 @@ node_modules/
 **/lib/
 coverage/
 **/coverage/
+*.tgz
 
 # Local environment, runtime state, and installation records
 .env
