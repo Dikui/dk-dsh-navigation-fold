@@ -1,4 +1,4 @@
-# dk-navigation-fold 开发约定
+# dk-dsh-navigation-fold 开发约定
 
 此仓库独立维护 DeepSeek Harness 的侧栏分组切换插件，不是 DSH 官方源码分支。插件位于项目根目录，不使用 workspace 或 `packages/` 子目录。
 

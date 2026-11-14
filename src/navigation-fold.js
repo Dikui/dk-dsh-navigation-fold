@@ -12,19 +12,19 @@ export function installNavigationFold(document) {
   // The host may re-apply a client plugin without disposing the previous run
   // (reload, re-enable, hot update), and every run would stack its own switch
   // above the same sidebar. Take over from that run instead of doubling up.
-  const instanceKey = Symbol.for('dk-navigation-fold.instance');
+  const instanceKey = Symbol.for('dk-dsh-navigation-fold.instance');
   const previous = document[instanceKey];
   if (typeof previous === 'function') previous();
   // Also drop artifacts left by a build that could not register itself.
   for (const stale of document.querySelectorAll(
-    '[data-dk-panel-switcher],[data-dk-navigation-fold-style],[data-dk-navigation-fold-toggle],[data-dk-workspace-header-spacer]',
+    '[data-dk-panel-switcher],[data-dk-dsh-navigation-fold-style],[data-dk-dsh-navigation-fold-toggle],[data-dk-workspace-header-spacer]',
   )) stale.remove();
-  for (const stale of document.querySelectorAll('[data-dk-panel-hidden],[data-dk-navigation-fold-hidden]')) {
+  for (const stale of document.querySelectorAll('[data-dk-panel-hidden],[data-dk-dsh-navigation-fold-hidden]')) {
     stale.removeAttribute('data-dk-panel-hidden');
-    stale.removeAttribute('data-dk-navigation-fold-hidden');
+    stale.removeAttribute('data-dk-dsh-navigation-fold-hidden');
   }
   const style = document.createElement('style');
-  style.dataset.dkNavigationFoldStyle = '';
+  style.dataset.dkDshNavigationFoldStyle = '';
   // The switch sits above the scrollport, so it keeps its place while the
   // selected list scrolls. Host nodes are only ever hidden, never moved: the
   // host still owns every node it renders, including their order.
@@ -35,7 +35,7 @@ export function installNavigationFold(document) {
 [data-dk-panel-switcher] button[role=tab][aria-selected=true]{color:var(--dsw-alias-label-primary,currentColor);border-bottom-color:currentColor}
 [data-dk-panel-switcher] button[role=tab]:focus-visible{outline:2px solid var(--dsw-alias-label-primary,currentColor);outline-offset:-2px}
 [data-dk-panel-hidden]{display:none!important}
-[data-dk-navigation-fold-hidden]{display:none!important}
+[data-dk-dsh-navigation-fold-hidden]{display:none!important}
 /* The tab already names the group, so the shipped heading keeps its row height
    through this spacer instead of repeating the same word twice. */
 [data-dk-workspace-header-spacer]{flex-grow:1;flex-shrink:1;flex-basis:0;min-width:0}
@@ -47,7 +47,7 @@ export function installNavigationFold(document) {
 
   // Left-to-right order of the switch; the workspace list stays the default view.
   const panels = ['navigation', 'workspace'];
-  const storageKey = 'dk-navigation-fold:panel:v1';
+  const storageKey = 'dk-dsh-navigation-fold:panel:v1';
   const switcher = document.createElement('div');
   switcher.setAttribute('data-dk-panel-switcher', '');
   switcher.setAttribute('role', 'tablist');
@@ -115,7 +115,7 @@ export function installNavigationFold(document) {
     if (binding) {
       binding.nav.removeAttribute('data-dk-panel-hidden');
       binding.workspace.browser.removeAttribute('data-dk-panel-hidden');
-      binding.workspace.title?.removeAttribute('data-dk-navigation-fold-hidden');
+      binding.workspace.title?.removeAttribute('data-dk-dsh-navigation-fold-hidden');
       binding.spacer.remove();
     }
     for (const element of ownedIds) element.removeAttribute('id');
@@ -155,8 +155,8 @@ export function installNavigationFold(document) {
       target.toggleAttribute('data-dk-panel-hidden', active !== panel);
       if (target.id) tab.setAttribute('aria-controls', target.id);
     }
-    title?.setAttribute('data-dk-navigation-fold-hidden', '');
-    spacer.toggleAttribute('data-dk-navigation-fold-hidden', searching);
+    title?.setAttribute('data-dk-dsh-navigation-fold-hidden', '');
+    spacer.toggleAttribute('data-dk-dsh-navigation-fold-hidden', searching);
   }
   function findNavigation() {
     // DSH 0.2.2-rc.2 moved the navigation into a grid scroll area below the

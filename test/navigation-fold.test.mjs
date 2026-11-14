@@ -329,7 +329,7 @@ test('记住上次选择的标签；旧折叠偏好不再影响展示', () => {
     tab(first.document, 'navigation').click();
     const storage = first.dom.window.localStorage;
     assert.equal(storage.length, 1, '只保存插件自己的一项偏好');
-    assert.equal(storage.key(0), 'dk-navigation-fold:panel:v1');
+    assert.equal(storage.key(0), 'dk-dsh-navigation-fold:panel:v1');
     persisted = [storage.key(0), storage.getItem(storage.key(0))];
     assert.equal(persisted[1], 'navigation');
     first.dispose();
@@ -351,7 +351,7 @@ test('记住上次选择的标签；旧折叠偏好不再影响展示', () => {
   try {
     assert.equal(tab(legacy.document, 'workspace').getAttribute('aria-selected'), 'true');
     assert.equal(shown(legacy.document, 'workspace'), true);
-    assert.equal(legacy.dom.window.localStorage.getItem('dk-navigation-fold:panel:v1'), null,
+    assert.equal(legacy.dom.window.localStorage.getItem('dk-dsh-navigation-fold:panel:v1'), null,
       '旧折叠 key 不改变默认分组');
   } finally { legacy.dispose(); legacy.dom.window.close(); }
 });
@@ -372,7 +372,7 @@ test('宿主展开工作区搜索时自动切回工作区，收起后不跳回',
     search.setAttribute('aria-expanded', 'false');
     await nextDomUpdate(dom.window);
     assert.equal(shown(document, 'workspace'), true, '收起搜索不切换分组');
-    assert.equal(dom.window.localStorage.getItem('dk-navigation-fold:panel:v1'), 'workspace');
+    assert.equal(dom.window.localStorage.getItem('dk-dsh-navigation-fold:panel:v1'), 'workspace');
   } finally { dispose(); dom.window.close(); }
 });
 
@@ -385,15 +385,15 @@ test('侧栏重建后保持选择并重新挂载，停用后完整恢复', async
     assert.equal(document.querySelectorAll('[data-dk-panel-switcher]').length, 1, '不重复挂载');
     assert.equal(tab(document, 'navigation').getAttribute('aria-selected'), 'true', '重建后保持选择');
     assert.equal(shown(document, 'navigation'), true);
-    assert.equal(document.getElementById('workspace-label').hasAttribute('data-dk-navigation-fold-hidden'), true);
+    assert.equal(document.getElementById('workspace-label').hasAttribute('data-dk-dsh-navigation-fold-hidden'), true);
     assert.equal(switcher(document).nextElementSibling, document.querySelector('nav'));
     dispose(); // Cancel a pending observer update too.
     await nextDomUpdate(dom.window);
     assert.equal(switcher(document), null);
     assert.equal(document.querySelector('[data-dk-panel-hidden]'), null);
-    assert.equal(document.querySelector('[data-dk-navigation-fold-hidden]'), null);
+    assert.equal(document.querySelector('[data-dk-dsh-navigation-fold-hidden]'), null);
     assert.equal(document.querySelector('[data-dk-workspace-header-spacer]'), null);
-    assert.equal(document.querySelector('[data-dk-navigation-fold-style]'), null);
+    assert.equal(document.querySelector('[data-dk-dsh-navigation-fold-style]'), null);
     assert.equal(document.querySelector('nav').id, '', '不遗留插件生成的 id');
     assert.equal(shown(document, 'workspace'), true);
     assert.equal(shown(document, 'navigation'), true);
@@ -416,7 +416,7 @@ test('缺少工作区标题、官方插槽或导航时不接管', () => {
       assert.equal(switcher(document), null, name);
       assert.equal(document.querySelector('[data-dk-panel-hidden]'), null, name);
       const title = document.getElementById('workspace-label');
-      if (title) assert.equal(title.hasAttribute('data-dk-navigation-fold-hidden'), false, name);
+      if (title) assert.equal(title.hasAttribute('data-dk-dsh-navigation-fold-hidden'), false, name);
       const nav = document.querySelector('nav');
       if (nav) assert.notEqual(dom.window.getComputedStyle(nav).display, 'none', name);
     } finally { dispose(); dom.window.close(); }
@@ -435,8 +435,8 @@ test('本地存储不可用也可切换；清理后无额外标签、隐藏属�
     dispose();
     await nextDomUpdate(dom.window);
     assert.equal(switcher(document), null);
-    assert.equal(document.querySelector('[data-dk-navigation-fold-style]'), null);
-    assert.equal(document.querySelector('[data-dk-navigation-fold-hidden]'), null);
+    assert.equal(document.querySelector('[data-dk-dsh-navigation-fold-style]'), null);
+    assert.equal(document.querySelector('[data-dk-dsh-navigation-fold-hidden]'), null);
     assert.notEqual(dom.window.getComputedStyle(document.querySelector('nav')).display, 'none');
     assert.notEqual(dom.window.getComputedStyle(document.getElementById('workspace-list')).display, 'none');
   } finally { dispose(); dom.window.close(); }
@@ -470,7 +470,7 @@ test('构建产物通过宿主模块入口挂载，插件生命周期结束即�
     for (const dispose of disposers) dispose();
     assert.equal(switcher(dom.window.document), null);
     assert.equal(dom.window.document.querySelector('[data-dk-panel-hidden]'), null);
-    assert.equal(dom.window.document.querySelector('[data-dk-navigation-fold-hidden]'), null);
+    assert.equal(dom.window.document.querySelector('[data-dk-dsh-navigation-fold-hidden]'), null);
     assert.notEqual(dom.window.getComputedStyle(dom.window.document.querySelector('nav')).display, 'none');
     assert.notEqual(dom.window.getComputedStyle(dom.window.document.getElementById('workspace-list')).display, 'none');
   } finally { for (const dispose of disposers) dispose(); dom.window.close(); }
@@ -486,7 +486,7 @@ test('重复挂载时接管上一次实例，切换器不叠加', () => {
   try {
     // Re-applying without disposing the previous run must not stack a switch row.
     assert.equal(document.querySelectorAll('[data-dk-panel-switcher]').length, 1);
-    assert.equal(document.querySelectorAll('style[data-dk-navigation-fold-style]').length, 1);
+    assert.equal(document.querySelectorAll('style[data-dk-dsh-navigation-fold-style]').length, 1);
     // The retired run is already disposed: calling it again changes nothing.
     first();
     assert.equal(document.querySelectorAll('[data-dk-panel-switcher]').length, 1, '旧实例停用不得移除新实例的切换器');
@@ -496,7 +496,7 @@ test('重复挂载时接管上一次实例，切换器不叠加', () => {
   } finally {
     second();
     assert.equal(document.querySelector('[data-dk-panel-switcher]'), null);
-    assert.equal(document.querySelector('style[data-dk-navigation-fold-style]'), null);
+    assert.equal(document.querySelector('style[data-dk-dsh-navigation-fold-style]'), null);
     assert.equal(shown(document, 'navigation'), true);
     assert.equal(shown(document, 'workspace'), true);
     dom.window.close();
@@ -509,18 +509,18 @@ test('安装时清掉旧版残留的折叠按钮、样式与隐藏标记', () =>
   });
   const { document } = dom.window;
   const staleToggle = document.createElement('button');
-  staleToggle.setAttribute('data-dk-navigation-fold-toggle', 'navigation');
+  staleToggle.setAttribute('data-dk-dsh-navigation-fold-toggle', 'navigation');
   document.querySelector('nav').before(staleToggle);
   const staleStyle = document.createElement('style');
-  staleStyle.setAttribute('data-dk-navigation-fold-style', '');
+  staleStyle.setAttribute('data-dk-dsh-navigation-fold-style', '');
   document.head.append(staleStyle);
-  document.querySelector('nav').setAttribute('data-dk-navigation-fold-hidden', '');
+  document.querySelector('nav').setAttribute('data-dk-dsh-navigation-fold-hidden', '');
   document.getElementById('workspace-browser').setAttribute('data-dk-panel-hidden', '');
   const dispose = installNavigationFold(document);
   try {
-    assert.equal(document.querySelector('[data-dk-navigation-fold-toggle]'), null, '旧版折叠按钮不得残留');
-    assert.equal(document.querySelectorAll('style[data-dk-navigation-fold-style]').length, 1);
-    assert.equal(document.querySelector('nav').hasAttribute('data-dk-navigation-fold-hidden'), false);
+    assert.equal(document.querySelector('[data-dk-dsh-navigation-fold-toggle]'), null, '旧版折叠按钮不得残留');
+    assert.equal(document.querySelectorAll('style[data-dk-dsh-navigation-fold-style]').length, 1);
+    assert.equal(document.querySelector('nav').hasAttribute('data-dk-dsh-navigation-fold-hidden'), false);
     assert.equal(shown(document, 'workspace'), true, '残留的隐藏标记不得遮住所选分组');
   } finally { dispose(); dom.window.close(); }
 });

@@ -1,20 +1,20 @@
-# 侧栏分组切换 · dk-navigation-fold
+# 侧栏分组切换 · dk-dsh-navigation-fold
 
 独立 DSH 插件，把侧栏的功能导航和工作区列表放到顶部的两个标签里，一次只展示一组。不替换官方侧栏，也不修改应用安装包。
 
-当前独立项目版本为 **0.0.1**，从 `dk-dsh-front` 的插件目录迁移而来，保留完整 Git 历史。版本重置不表示功能回退：既有源码、测试、插件身份与兼容范围保持不变。项目根目录就是可构建、打包和安装的插件包，不再使用 pnpm workspace。
+当前独立项目版本为 **0.0.1**，从 `dk-dsh-front` 的插件目录迁移而来，保留完整 Git 历史。版本重置不表示功能回退：既有源码、测试与兼容范围保持不变。项目根目录就是可构建、打包和安装的插件包，不再使用 pnpm workspace；包名、插件 id、ModuleLoader id、DOM 标记与持久化 key 从 0.0.1 起统一为 `dk-dsh-` 前缀。
 
 ## 使用
 
 - 「新会话」下方出现两个标签：**功能导航**（左）和 **工作区**（右）。标签固定在滚动区之外，滚动列表时位置不变，也不会再被另一组内容的高度推着走。
-- 默认展示工作区；点击或按方向键切换后只渲染所选分组，另一组隐藏。选择保存在 localStorage 的 `dk-navigation-fold:panel:v1`（`workspace` 或 `navigation`），刷新后恢复。
+- 默认展示工作区；点击或按方向键切换后只渲染所选分组，另一组隐藏。选择保存在 localStorage 的 `dk-dsh-navigation-fold:panel:v1`（`workspace` 或 `navigation`），刷新后恢复。
 - 工作区标签的文字直接取宿主标题（中文「工作区」、英文「Workspaces」等），不复制文案；功能导航标签跟随宿主当前语言：中文「功能导航」，其他语言回退「Navigation」。切换语言即时更新文字，不重建标签，也不重置选择。使用宿主同步的 `<html lang>`，不另存语言偏好或按操作系统语言猜测。
 - 标签采用 ARIA 页签语义（`role=tablist/tab`、`aria-selected`、`aria-controls`），只有当前标签进入 Tab 顺序；左右/上下方向键、Home、End 在两组之间切换。
 - 工作区标题不再重复显示，原位置用等高占位补齐宽度，搜索、视图及新增按钮保持原位与原有行为。宿主展开工作区搜索时自动切回工作区标签并让出整行宽度；收起搜索不跳回。
 - rc.2 展开侧栏中，标签栏上方（新会话之后）保留 8px 外距；标签下方利用首个菜单行自身的内部留白，移除额外的 8px 网格空行、标签下边距和滚动区上边距，避免透明菜单行让视觉空隙叠加。菜单项高度、内部间距及工作区自身布局不变；代码契约测试不代表文字可见边缘的像素验收。
 - Logo、新会话、设置及官方“整个侧栏开关”保持原状。原有入口和列表不被移动或重新实现。
-- 在插件管理中停用或卸载 `dk-navigation-fold` 可恢复原导航与工作区；本地选择保留，方便重新启用时恢复。旧版折叠偏好（`dk-navigation-fold:collapsed:v1`、`dk-navigation-fold:workspaces-collapsed:v1` 及 `dsh-navigation-fold:*`）不再读取，也不再写入，文件里留存的旧值不删除。
-- 从旧包名 `dsh-navigation-fold` 升级：先移除旧安装，再安装并启用 `dk-navigation-fold`。插件包名、入口 id 和 DOM 标记均已切换为 `dk-` 前缀，旧安装需重装。
+- 在插件管理中停用或卸载 `dk-dsh-navigation-fold` 可恢复原导航与工作区；本地选择保留，方便重新启用时恢复。旧 key（`dk-navigation-fold:*`、`dsh-navigation-fold:*`，包括此前的折叠偏好）不再读取，也不再写入，文件里留存的旧值不删除。
+- 从旧包名 `dsh-navigation-fold` 升级：先移除旧安装，再安装并启用 `dk-dsh-navigation-fold`。插件包名、入口 id 和 DOM 标记均已切换为 `dk-dsh-` 前缀；从 0.0.1 的 `dk-navigation-fold` 升级同样需要重装。
 - 安装或重新构建后，可在插件管理中停用再启用本插件，让宿主重新读取产物；不需要启动新的 Web 服务。若仍无标签栏，需检查启用状态及 DOM 兼容性，刷新或重启不能修复结构失配。
 
 ## 边界与兼容性
@@ -35,8 +35,8 @@
 需要 Node >=22.19 和 pnpm 11.28.5；已在 Node 24 上验证。`jsdom` 仅是开发依赖。克隆后在项目根目录执行：
 
 ```sh
-git clone https://github.com/Dikui/dk-navigation-fold.git
-cd dk-navigation-fold
+git clone https://github.com/Dikui/dk-dsh-navigation-fold.git
+cd dk-dsh-navigation-fold
 pnpm install --frozen-lockfile --ignore-scripts
 pnpm check
 pnpm build
@@ -57,9 +57,9 @@ pnpm build
    link:<本仓库的绝对路径>
    ```
 
-3. 启用 `dk-navigation-fold`。验证顶部标签切换、刷新后选择保持、Logo/新会话/工作区工具按钮正常，以及停用后恢复原侧栏。
+3. 启用 `dk-dsh-navigation-fold`。验证顶部标签切换、刷新后选择保持、Logo/新会话/工作区工具按钮正常，以及停用后恢复原侧栏。
 
-本地链接会直接指向整个工作副本，应保留工作副本及生成的客户端产物。已有安装若仍指向旧 workspace 的插件目录，需要在插件管理中将安装来源改为新项目根目录；仅移动源码不会更新旧链接。此次拆分不改变包名、Cordis/ModuleLoader id 或 `dk-navigation-fold:panel:v1`，无需重置现有标签选择，也不会自动改写任何 DSH 安装配置。
+本地链接会直接指向整个工作副本，应保留工作副本及生成的客户端产物。已有安装若仍指向旧 workspace 的插件目录，需要在插件管理中将安装来源改为新项目根目录；仅移动源码不会更新旧链接。本次改名同时切换了包名、Cordis/ModuleLoader id、DOM 标记和持久化 key：旧安装需重装，标签选择会重置（旧 key 不再读取）；不会自动改写任何 DSH 安装配置。
 
 ## 打包
 
@@ -68,7 +68,7 @@ pnpm pack --dry-run --json
 pnpm pack
 ```
 
-`prepack` 会先运行构建，避免归档缺少客户端入口；dry-run 也会运行构建，但不写出归档。`pnpm pack` 会在项目根生成 `dk-navigation-fold-0.0.1.tgz`，包含 manifest、宿主入口、客户端产物、Cordis patch 与 README，不包含源码、测试或开发依赖。生成的归档、依赖目录和 `lib/` 均被忽略，不入库。
+`prepack` 会先运行构建，避免归档缺少客户端入口；dry-run 也会运行构建，但不写出归档。`pnpm pack` 会在项目根生成 `dk-dsh-navigation-fold-0.0.1.tgz`，包含 manifest、宿主入口、客户端产物、Cordis patch 与 README，不包含源码、测试或开发依赖。生成的归档、依赖目录和 `lib/` 均被忽略，不入库。
 
 本仓库保留 `private: true`，公开 GitHub 项目不等于 npm 发布。打包不会发布 npm、创建 Git 标签或 GitHub release；GitHub 源码归档不包含 `lib/`，使用前仍需构建。
 
