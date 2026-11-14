@@ -9,9 +9,10 @@
   "exports": {
     ".": "./index.js",
     "./client": "./lib/client.js",
+    "./locale/*.json": "./locale/*.json",
     "./package.json": "./package.json"
   },
-  "files": ["index.js", "lib/client.js", "cordis.patch.yml", "README.md"],
+  "files": ["index.js", "lib/client.js", "cordis.patch.yml", "locale", "README.md"],
   "dsh": {
     "manifestVersion": 1,
     "bundle": {"patch": "./cordis.patch.yml"},
