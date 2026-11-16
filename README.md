@@ -2,7 +2,7 @@
 
 独立 DSH 插件，把侧栏的功能导航和工作区列表放到顶部的两个标签里，一次只展示一组。不替换官方侧栏，也不修改应用安装包。
 
-当前独立项目版本为 **0.0.1**，从 `dk-dsh-front` 的插件目录迁移而来，保留完整 Git 历史。版本重置不表示功能回退：既有源码、测试与兼容范围保持不变。项目根目录就是可构建、打包和安装的插件包，不再使用 pnpm workspace；包名、插件 id、ModuleLoader id、DOM 标记与持久化 key 从 0.0.1 起统一为 `dk-dsh-` 前缀。
+当前独立项目版本为 **0.0.2**，从 `dk-dsh-front` 的插件目录迁移而来，保留完整 Git 历史。版本重置不表示功能回退：既有源码、测试与兼容范围保持不变。项目根目录就是可构建、打包和安装的插件包，不再使用 pnpm workspace；包名、插件 id、ModuleLoader id、DOM 标记与持久化 key 从 0.0.1 起统一为 `dk-dsh-` 前缀。
 
 ## 使用
 
@@ -68,7 +68,7 @@ pnpm pack --dry-run --json
 pnpm pack
 ```
 
-`prepack` 会先运行构建，避免归档缺少客户端入口；dry-run 也会运行构建，但不写出归档。`pnpm pack` 会在项目根生成 `dk-dsh-navigation-fold-0.0.1.tgz`，包含 manifest、宿主入口、客户端产物、Cordis patch 与 README，不包含源码、测试或开发依赖。生成的归档、依赖目录和 `lib/` 均被忽略，不入库。
+`prepack` 会先运行构建，避免归档缺少客户端入口；dry-run 也会运行构建，但不写出归档。`pnpm pack` 会在项目根生成 `dk-dsh-navigation-fold-0.0.2.tgz`，包含 manifest、宿主入口、客户端产物、Cordis patch 与 README，不包含源码、测试或开发依赖。生成的归档、依赖目录和 `lib/` 均被忽略，不入库。
 
 本仓库保留 `private: true`，公开 GitHub 项目不等于 npm 发布。打包不会发布 npm、创建 Git 标签或 GitHub release；GitHub 源码归档不包含 `lib/`，使用前仍需构建。
 
