@@ -1,7 +1,6 @@
-# Dependencies and generated client bundles
+# Dependencies, coverage, and packed archives
 node_modules/
 **/node_modules/
-**/lib/
 coverage/
 **/coverage/
 *.tgz
